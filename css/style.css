@@ -1,0 +1,95 @@
+/* Password Strength Analyser - styles */
+
+body {
+    background: #f2f2f2;
+    padding-bottom: 60px;
+}
+
+.navbar {
+    margin-bottom: 30px;
+}
+
+.panel-title {
+    font-weight: bold;
+}
+
+#password {
+    font-family: Consolas, "Courier New", monospace;
+}
+
+#meterWrap {
+    height: 14px;
+    margin-top: 10px;
+}
+
+#meter {
+    -webkit-transition: width 0.3s ease;
+    transition: width 0.3s ease;
+}
+
+.result-row {
+    margin-top: 10px;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 4px 0 10px;
+}
+
+.stat-value.small-val {
+    font-size: 18px;
+    line-height: 36px;
+}
+
+#rules .list-group-item .glyphicon {
+    margin-right: 6px;
+}
+
+#rules .list-group-item.passed {
+    color: #3c763d;
+}
+
+#rules .list-group-item.passed .glyphicon {
+    color: #5cb85c;
+}
+
+#rules .list-group-item.failed .glyphicon {
+    color: #d9534f;
+}
+
+.feedback-list {
+    padding-left: 18px;
+    margin-bottom: 0;
+}
+
+.feedback-list li {
+    margin-bottom: 6px;
+}
+
+.feedback-list li.warn {
+    color: #a94442;
+}
+
+.feedback-list li.good {
+    color: #3c763d;
+}
+
+.pts-plus {
+    color: #3c763d;
+}
+
+.pts-minus {
+    color: #a94442;
+}
+
+.footer {
+    margin-top: 20px;
+}
