@@ -1,86 +1,88 @@
-/*
+/**
  * app.js
  * Hooks the analyser up to the page and updates the UI in real time.
  */
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', () => {
 
-    var $pwd = $('#password');
+    const $ = (sel) => document.querySelector(sel);
 
-    function escapeHtml(s) {
-        return $('<div/>').text(s).html();
-    }
+    const pwd = $('#password');
+    const toggleBtn = $('#toggleBtn');
+    const meter = $('#meter');
+    const METER_CLASSES = ['bg-danger', 'bg-warning', 'bg-info', 'bg-success'];
 
-    function render(result) {
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    const render = (result) => {
+        const empty = result.length === 0;
+
         // meter
-        var $meter = $('#meter');
-        $meter.removeClass('progress-bar-danger progress-bar-warning progress-bar-info progress-bar-success')
-              .addClass('progress-bar-' + result.label.css)
-              .css('width', result.score + '%');
+        meter.classList.remove(...METER_CLASSES);
+        meter.classList.add(`bg-${result.label.css}`);
+        meter.style.width = `${result.score}%`;
 
         // stats
-        $('#scoreVal').text(result.score);
-        $('#strengthVal').text(result.label.text)
-            .attr('class', 'stat-value text-' + result.label.css);
-        $('#crackVal').text(result.crack);
+        $('#scoreVal').textContent = result.score;
+        const strength = $('#strengthVal');
+        strength.textContent = result.label.text;
+        strength.className = `stat-value stat-small text-${result.label.css}`;
+        $('#entropyVal').textContent = empty ? '-' : `${result.entropy} bits`;
+        $('#keyspaceVal').innerHTML = empty
+            ? '-'
+            : result.keyspace.replace(/\^(\d+)/, '<sup>$1</sup>');
+
+        // crack time per attack scenario
+        $('#attacks tbody').innerHTML = empty
+            ? '<tr><td colspan="3" class="text-muted">No password entered.</td></tr>'
+            : result.attacks.map(({ name, rate, time }) => `
+                <tr>
+                    <td>${escapeHtml(name)}</td>
+                    <td>${escapeHtml(PasswordAnalyser.formatRate(rate))}</td>
+                    <td class="text-right font-weight-bold">${escapeHtml(time)}</td>
+                </tr>`).join('');
 
         // rules checklist
-        $('#rules li').each(function () {
-            var rule = $(this).data('rule');
-            var ok = result.rules[rule] === true;
-            var empty = result.length === 0;
-
-            $(this).removeClass('passed failed');
-            if (!empty) { $(this).addClass(ok ? 'passed' : 'failed'); }
-
-            $(this).find('.glyphicon')
-                .toggleClass('glyphicon-ok', ok)
-                .toggleClass('glyphicon-remove', !ok);
+        document.querySelectorAll('#rules li').forEach((li) => {
+            const ok = result.rules[li.dataset.rule] === true;
+            li.classList.toggle('passed', !empty && ok);
+            li.classList.toggle('failed', !empty && !ok);
         });
 
         // feedback
-        var $fb = $('#feedback').empty();
-        if (result.length === 0) {
-            $fb.append('<li class="text-muted">Start typing to see suggestions.</li>');
-        } else {
-            $.each(result.feedback, function (i, item) {
-                $fb.append('<li class="' + item.type + '">' + escapeHtml(item.msg) + '</li>');
-            });
-        }
+        $('#feedback').innerHTML = empty
+            ? '<li class="text-muted">Start typing to see suggestions.</li>'
+            : result.feedback
+                .map(({ type, msg }) => `<li class="${type}">${escapeHtml(msg)}</li>`)
+                .join('');
 
         // breakdown table
-        var $body = $('#breakdown tbody').empty();
-        if (result.breakdown.length === 0) {
-            $body.append('<tr><td colspan="3" class="text-muted">No password entered.</td></tr>');
-        } else {
-            $.each(result.breakdown, function (i, row) {
-                var cls = row.points >= 0 ? 'pts-plus' : 'pts-minus';
-                var sign = row.points > 0 ? '+' : '';
-                $body.append(
-                    '<tr><td>' + row.name + '</td>' +
-                    '<td>' + row.count + '</td>' +
-                    '<td class="text-right ' + cls + '">' + sign + row.points + '</td></tr>'
-                );
-            });
-        }
-    }
+        $('#breakdown tbody').innerHTML = result.breakdown.length === 0
+            ? '<tr><td colspan="4" class="text-muted">No password entered.</td></tr>'
+            : result.breakdown.map(({ name, count, points, rule }) => `
+                <tr>
+                    <td>${escapeHtml(name)}</td>
+                    <td><code class="rule-code">${escapeHtml(rule)}</code></td>
+                    <td>${count}</td>
+                    <td class="text-right ${points >= 0 ? 'pts-plus' : 'pts-minus'}">${points > 0 ? '+' : ''}${points}</td>
+                </tr>`).join('');
+    };
 
-    // real time feedback on every key stroke / paste
-    $pwd.on('keyup input paste', function () {
-        render(PasswordAnalyser.analyse($pwd.val()));
-    });
+    // real time feedback on every change (typing, paste, autofill)
+    pwd.addEventListener('input', () => render(PasswordAnalyser.analyse(pwd.value)));
 
     // show / hide password
-    $('#toggleBtn').on('click', function () {
-        if ($pwd.attr('type') === 'password') {
-            $pwd.attr('type', 'text');
-            $(this).text('Hide');
-        } else {
-            $pwd.attr('type', 'password');
-            $(this).text('Show');
-        }
-        $pwd.focus();
+    toggleBtn.addEventListener('click', () => {
+        const show = pwd.type === 'password';
+        pwd.type = show ? 'text' : 'password';
+        toggleBtn.textContent = show ? 'Hide' : 'Show';
+        toggleBtn.setAttribute('aria-pressed', String(show));
+        pwd.focus();
     });
+
+    $('#pwdForm').addEventListener('submit', (e) => e.preventDefault());
 
     render(PasswordAnalyser.analyse(''));
 });

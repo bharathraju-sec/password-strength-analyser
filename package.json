@@ -1,0 +1,19 @@
+{
+  "name": "password-strength-analyser",
+  "version": "1.0.0",
+  "description": "Real-time password strength analyser using regex rules and a scoring algorithm",
+  "main": "js/analyser.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "password",
+    "security",
+    "regex",
+    "strength-meter"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}

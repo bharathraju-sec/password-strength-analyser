@@ -1,95 +1,102 @@
 /* Password Strength Analyser - styles */
 
+:root {
+    --pass: #28a745;
+    --fail: #dc3545;
+    --muted: #6c757d;
+    --bg: #f4f6f8;
+}
+
 body {
-    background: #f2f2f2;
-    padding-bottom: 60px;
-}
-
-.navbar {
-    margin-bottom: 30px;
-}
-
-.panel-title {
-    font-weight: bold;
+    background: var(--bg);
 }
 
 #password {
-    font-family: Consolas, "Courier New", monospace;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
-#meterWrap {
-    height: 14px;
-    margin-top: 10px;
+.meter-wrap {
+    height: 12px;
+    margin-top: 0.5rem;
 }
 
 #meter {
-    -webkit-transition: width 0.3s ease;
-    transition: width 0.3s ease;
-}
-
-.result-row {
-    margin-top: 10px;
+    transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 .stat-label {
-    color: #888;
-    font-size: 12px;
+    color: var(--muted);
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.05em;
 }
 
 .stat-value {
-    font-size: 28px;
-    font-weight: bold;
-    margin: 4px 0 10px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0.25rem 0 0.75rem;
 }
 
-.stat-value.small-val {
-    font-size: 18px;
-    line-height: 36px;
+.stat-small {
+    font-size: 1.15rem;
+    line-height: 2.25rem;
 }
 
-#rules .list-group-item .glyphicon {
-    margin-right: 6px;
+/* rule checklist icons */
+#rules .icon {
+    display: inline-block;
+    width: 1.25rem;
+    font-weight: 700;
+    color: var(--muted);
 }
 
-#rules .list-group-item.passed {
-    color: #3c763d;
+#rules .icon::before {
+    content: "\2715"; /* ✕ */
 }
 
-#rules .list-group-item.passed .glyphicon {
-    color: #5cb85c;
+#rules .passed {
+    color: var(--pass);
 }
 
-#rules .list-group-item.failed .glyphicon {
-    color: #d9534f;
+#rules .passed .icon {
+    color: var(--pass);
+}
+
+#rules .passed .icon::before {
+    content: "\2713"; /* ✓ */
+}
+
+#rules .failed .icon {
+    color: var(--fail);
 }
 
 .feedback-list {
-    padding-left: 18px;
+    padding-left: 1.1rem;
     margin-bottom: 0;
 }
 
 .feedback-list li {
-    margin-bottom: 6px;
+    margin-bottom: 0.4rem;
 }
 
-.feedback-list li.warn {
+.feedback-list .warn {
     color: #a94442;
 }
 
-.feedback-list li.good {
-    color: #3c763d;
+.feedback-list .good {
+    color: var(--pass);
+}
+
+.rule-code {
+    font-size: 0.8rem;
+    color: #6f42c1;
+    white-space: nowrap;
 }
 
 .pts-plus {
-    color: #3c763d;
+    color: var(--pass);
 }
 
 .pts-minus {
-    color: #a94442;
-}
-
-.footer {
-    margin-top: 20px;
+    color: var(--fail);
 }

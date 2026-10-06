@@ -2,92 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Password Strength Analyser</title>
 
-    <!-- Bootstrap 3 -->
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+<nav class="navbar navbar-dark bg-dark mb-4">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Password Strength Analyser</a>
-        </div>
-        <p class="navbar-text navbar-right hidden-xs">Mini Project - Web Technologies Lab</p>
+        <span class="navbar-brand mb-0 h1">Password Strength Analyser</span>
+        <span class="navbar-text d-none d-sm-inline">Mini Project &middot; Web Technologies Lab</span>
     </div>
-</div>
+</nav>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+<main class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Check your password</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="pwdForm" onsubmit="return false;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header font-weight-bold">Check your password</div>
+                <div class="card-body">
+                    <form id="pwdForm" autocomplete="off" novalidate>
                         <div class="form-group">
                             <label for="password">Enter Password</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control input-lg" id="password"
-                                       placeholder="Type a password..." autocomplete="off">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default btn-lg" type="button" id="toggleBtn">Show</button>
-                                </span>
+                            <div class="input-group input-group-lg">
+                                <input type="password" class="form-control" id="password"
+                                       placeholder="Type a password..." spellcheck="false"
+                                       aria-describedby="privacyHelp">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleBtn"
+                                            aria-pressed="false">Show</button>
+                                </div>
                             </div>
-                            <p class="help-block">Nothing is sent to a server. All checks run in your browser.</p>
+                            <small id="privacyHelp" class="form-text text-muted">
+                                Nothing is sent to a server. All checks run in your browser.
+                            </small>
                         </div>
                     </form>
 
-                    <div class="progress" id="meterWrap">
-                        <div class="progress-bar" id="meter" role="progressbar" style="width: 0%;"></div>
+                    <div class="progress meter-wrap" aria-hidden="true">
+                        <div class="progress-bar" id="meter" role="progressbar" style="width: 0%"></div>
                     </div>
 
-                    <div class="row result-row">
-                        <div class="col-sm-4 text-center">
+                    <div class="row text-center mt-3" aria-live="polite">
+                        <div class="col-6 col-md-3">
                             <div class="stat-label">Score</div>
                             <div class="stat-value" id="scoreVal">0</div>
                         </div>
-                        <div class="col-sm-4 text-center">
+                        <div class="col-6 col-md-3">
                             <div class="stat-label">Strength</div>
-                            <div class="stat-value" id="strengthVal">-</div>
+                            <div class="stat-value stat-small" id="strengthVal">-</div>
                         </div>
-                        <div class="col-sm-4 text-center">
-                            <div class="stat-label">Est. crack time</div>
-                            <div class="stat-value small-val" id="crackVal">-</div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-label">Entropy</div>
+                            <div class="stat-value stat-small" id="entropyVal">-</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-label">Keyspace</div>
+                            <div class="stat-value stat-small" id="keyspaceVal">-</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="panel-title">Complexity Rules</h3></div>
-                        <ul class="list-group" id="rules">
-                            <li class="list-group-item" data-rule="length"><span class="glyphicon glyphicon-remove"></span> At least 8 characters</li>
-                            <li class="list-group-item" data-rule="lower"><span class="glyphicon glyphicon-remove"></span> Lowercase letter (a-z)</li>
-                            <li class="list-group-item" data-rule="upper"><span class="glyphicon glyphicon-remove"></span> Uppercase letter (A-Z)</li>
-                            <li class="list-group-item" data-rule="digit"><span class="glyphicon glyphicon-remove"></span> Number (0-9)</li>
-                            <li class="list-group-item" data-rule="special"><span class="glyphicon glyphicon-remove"></span> Special character (!@#$...)</li>
-                            <li class="list-group-item" data-rule="longer"><span class="glyphicon glyphicon-remove"></span> 12+ characters (bonus)</li>
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header font-weight-bold">Complexity Rules</div>
+                        <ul class="list-group list-group-flush" id="rules">
+                            <li class="list-group-item" data-rule="length"><span class="icon"></span>At least 8 characters</li>
+                            <li class="list-group-item" data-rule="lower"><span class="icon"></span>Lowercase letter (a-z)</li>
+                            <li class="list-group-item" data-rule="upper"><span class="icon"></span>Uppercase letter (A-Z)</li>
+                            <li class="list-group-item" data-rule="digit"><span class="icon"></span>Number (0-9)</li>
+                            <li class="list-group-item" data-rule="special"><span class="icon"></span>Special character (!@#$...)</li>
+                            <li class="list-group-item" data-rule="longer"><span class="icon"></span>12+ characters (bonus)</li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><h3 class="panel-title">Feedback</h3></div>
-                        <div class="panel-body">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header font-weight-bold">Feedback</div>
+                        <div class="card-body">
                             <ul id="feedback" class="feedback-list">
                                 <li class="text-muted">Start typing to see suggestions.</li>
                             </ul>
@@ -96,31 +93,47 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title">Score Breakdown</h3></div>
-                <table class="table table-condensed table-striped" id="breakdown">
-                    <thead>
-                        <tr><th>Check</th><th>Count</th><th class="text-right">Points</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td colspan="3" class="text-muted">No password entered.</td></tr>
-                    </tbody>
-                </table>
+            <div class="card shadow-sm mb-4">
+                <div class="card-header font-weight-bold">Time to Crack by Attack Type</div>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0" id="attacks">
+                        <thead>
+                            <tr><th>Attack scenario</th><th>Guesses / second</th><th class="text-right">Time</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="3" class="text-muted">No password entered.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer small text-muted">
+                    Average time to find the password by brute force (half the keyspace).
+                    Common passwords fall to a dictionary attack instantly.
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header font-weight-bold">Score Breakdown</div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped mb-0" id="breakdown">
+                        <thead>
+                            <tr><th>Check</th><th>Rule / Regex</th><th>Count</th><th class="text-right">Points</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" class="text-muted">No password entered.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
     </div>
-</div>
+</main>
 
-<div class="footer">
-    <div class="container text-center text-muted">
-        <small>B.Tech Mini Project &middot; HTML5, CSS3, JavaScript, jQuery, Bootstrap 3</small>
-    </div>
-</div>
+<footer class="text-center text-muted py-4">
+    <small>B.Tech (Computer Science &amp; Engineering) Mini Project &middot; HTML5, CSS3, ES6 JavaScript, Bootstrap 4</small>
+</footer>
 
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="js/analyser.js"></script>
-<script src="js/app.js"></script>
+<script src="js/analyser.js" defer></script>
+<script src="js/app.js" defer></script>
 </body>
 </html>
