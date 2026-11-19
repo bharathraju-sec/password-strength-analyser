@@ -1,5 +1,10 @@
 # Password Strength Analyser
 
+[![Tests](https://github.com/bharathraju-sec/password-strength-analyser/actions/workflows/test.yml/badge.svg)](https://github.com/bharathraju-sec/password-strength-analyser/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**[Live demo](https://bharathraju-sec.github.io/password-strength-analyser/)** — use a sample password, not one you currently use.
+
 A client-side web app that checks how strong a password is while you type.
 It uses regular expressions, validation rules and a points-based scoring algorithm.
 
