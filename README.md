@@ -5,6 +5,8 @@
 
 **[Live demo](https://bharathraju-sec.github.io/password-strength-analyser/)** — use a sample password, not one you currently use.
 
+![Password Strength Analyser scoring the synthetic sample password Sample!Tiger42x: score 100, 99 bits entropy, complexity rules and crack-time table](docs/images/password-strength-analyser.jpg)
+
 A client-side web app that checks how strong a password is while you type.
 It uses regular expressions, validation rules and a points-based scoring algorithm.
 
