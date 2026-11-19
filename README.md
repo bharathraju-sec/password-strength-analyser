@@ -30,7 +30,7 @@ It uses regular expressions, validation rules and a points-based scoring algorit
 - HTML5, CSS3 (custom properties)
 - JavaScript (ES6+, no frameworks)
 - Bootstrap 4.3
-- Jest (unit tests)
+- Jest 29 (unit tests, run in GitHub Actions on every push)
 
 ## Academic Context
 
@@ -68,7 +68,7 @@ Open `index.html` in any modern browser. You don't need to install anything.
 ## Running Tests
 
 ```
-npm install
+npm ci
 npm test
 ```
 
@@ -107,3 +107,10 @@ average time  = 2^entropy / 2 / guesses per second
 | Online attack, not throttled             | 10               |
 | Offline attack, slow hash (bcrypt)       | 10,000           |
 | Offline attack, fast hash (MD5 on GPUs)  | 10^10            |
+
+## Limitations
+
+- Entropy here is a search-space estimate based on the character types used. It assumes every character is chosen at random, which real passwords rarely are.
+- Predictable, personal or reused passwords can be much weaker than their score suggests. The dictionary check covers only a small list of common passwords.
+- Crack times are averages for brute force under the assumed guess rates. Real times depend on the hash algorithm and its parameters, rate limiting, account lockout and the attacker's hardware.
+- The score is guidance for choosing a stronger password, not a security guarantee.
